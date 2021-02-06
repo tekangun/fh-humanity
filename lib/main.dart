@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:humanity/core/locator.dart';
-import 'package:humanity/screens/nav_bar/bottom_nav_bar.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:humantiy/core/locator.dart';
+import 'package:humantiy/screens/nav_bar/bottom_nav_bar.dart';
 
 Future<void> main()async {
   setUpLocators();

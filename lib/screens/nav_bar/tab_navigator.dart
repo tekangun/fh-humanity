@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:humanity/screens/home.dart';
-import 'package:humanity/screens/settings.dart';
+import 'package:humantiy/screens/home.dart';
+import 'package:humantiy/screens/settings.dart';
 
 class TabNavigator extends StatefulWidget {
   final GlobalKey<NavigatorState> navigatorKey;

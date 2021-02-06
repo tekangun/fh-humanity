@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:humanity/screens/nav_bar/tab_navigator.dart';
+import 'package:humantiy/screens/nav_bar/tab_navigator.dart';
 
 class BottomNavBarPage extends StatefulWidget {
   @override
