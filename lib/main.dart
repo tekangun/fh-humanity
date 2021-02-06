@@ -6,7 +6,7 @@ import 'package:humantiy/screens/nav_bar/bottom_nav_bar.dart';
 
 Future<void> main()async {
   setUpLocators();
-  await Hive.initFlutter(); 
+  await Hive.initFlutter();
   runApp(MyApp());
 }
 

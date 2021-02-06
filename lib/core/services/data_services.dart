@@ -16,3 +16,18 @@ class DataServices {
   }
 }
 
+class DataServicesFromCoordinate {
+  final String lat;
+  final String lng;
+
+  DataServicesFromCoordinate({this.lat,this.lng});
+
+  Future<AirDataModel> getCityDataFromCoordinate() async {
+    var url = 'https://api.waqi.info/feed/geo:$lat;$lng/?token=$airToken';
+    var response = await http.get(url).catchError((error) => print(error));
+    return AirDataModel.fromSnapshots(airDataMap: jsonDecode(response.body));
+  }
+}
+
+
+
