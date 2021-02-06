@@ -13,22 +13,22 @@ class BarajMainState extends State<BarajMain> {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        child: new FlutterMap(
-          options: new MapOptions(
+        child:  FlutterMap(
+          options:  MapOptions(
             plugins: [
               MarkerClusterPlugin(),
             ],
             zoom: 5.0,
             minZoom: 2.0,
             maxZoom: 20.0,
-            center: new LatLng(41, 28),
+            center:  LatLng(41, 28),
           ),
           layers: [
-            new TileLayerOptions(
+             TileLayerOptions(
               maxZoom: 20,
               urlTemplate:
                   'http://mt{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
-              subdomains: ["0", "1", "2", "3"],
+              subdomains: ['0', '1', '2', '3'],
               tileProvider: NonCachingNetworkTileProvider(),
             ),
           ],
