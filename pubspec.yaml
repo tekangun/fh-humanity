@@ -37,6 +37,7 @@ dependencies:
   pedantic: ^1.9.2
   geojson: ^0.9.1
   geopoint: ^0.7.1
+  font_awesome_flutter: ^8.11.0
 
 dev_dependencies:
   flutter_test:
