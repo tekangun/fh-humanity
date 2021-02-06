@@ -37,6 +37,8 @@ dependencies:
   pedantic: ^1.9.2
   geojson: ^0.9.1
   geopoint: ^0.7.1
+  carousel_slider: ^3.0.0
+  shimmer: ^1.1.2
 
 dev_dependencies:
   flutter_test:
