@@ -8,22 +8,16 @@ import 'package:humantiy/core/services/data_services.dart';
 import 'package:humantiy/core/services/location_services.dart';
 import 'package:humantiy/models/air_data_model.dart';
 
-<<<<<<< HEAD
 import '../core/locator.dart';
 
-=======
->>>>>>> 7b8823ca47b2c1ebf6da24d4510f27f82c47e192
 class Home extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => HomeState();
 }
 
 class HomeState extends State<Home> {
-<<<<<<< HEAD
-=======
   List<LatLng> tappedPoints = [];
 
->>>>>>> 7b8823ca47b2c1ebf6da24d4510f27f82c47e192
   test() async {
     for (String cityName in citys) {
       var model = getIt<DataServices>(param1: cityName, param2: '');
@@ -33,15 +27,12 @@ class HomeState extends State<Home> {
           'Pm10: ${tester.pm10} ' +
           'pm25: ${tester.pm25} ');
     }
-<<<<<<< HEAD
   }
 
   test2() async {
     var model2 = getIt<DataServicesBaraj>();
     BarajDataModel tester2 = await model2.getBarajData();
     print('isim: ${tester2.isim}');
-=======
->>>>>>> 7b8823ca47b2c1ebf6da24d4510f27f82c47e192
   }
 
   @override
@@ -92,8 +83,6 @@ class HomeState extends State<Home> {
       ),
     );
   }
-<<<<<<< HEAD
-=======
 
   void _handleTap(LatLng latlng) {
     print(latlng.latitude);
@@ -102,5 +91,4 @@ class HomeState extends State<Home> {
     //   tappedPoints.add(latlng);
     // });
   }
->>>>>>> 7b8823ca47b2c1ebf6da24d4510f27f82c47e192
 }
