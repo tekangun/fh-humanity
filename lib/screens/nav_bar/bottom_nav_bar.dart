@@ -10,10 +10,10 @@ class BottomNavBarPage extends StatefulWidget {
 class BottomNavBarPageState extends State<BottomNavBarPage> {
   int currentIndex = 0; // to keep track of active tab index
   String currentPage = '';
-  List<String> pageKeys = ['Ana Sayfa', 'Baraj', 'Ayarlar'];
-  Map<String, GlobalKey<NavigatorState>> _navigatorKeys = {
+  List<String> pageKeys = ['Ana Sayfa', 'Harita', 'Ayarlar'];
+  final _navigatorKeys = {
     'Ana Sayfa': GlobalKey<NavigatorState>(),
-    'Baraj': GlobalKey<NavigatorState>(),
+    'Harita': GlobalKey<NavigatorState>(),
     'Ayarlar': GlobalKey<NavigatorState>(),
   };
 
@@ -48,7 +48,7 @@ class BottomNavBarPageState extends State<BottomNavBarPage> {
         body: Stack(
           children: <Widget>[
             _buildOffsetageNavigator('Ana Sayfa'),
-            _buildOffsetageNavigator('Baraj'),
+            _buildOffsetageNavigator('Harita'),
             _buildOffsetageNavigator('Ayarlar'),
           ],
         ),
@@ -61,7 +61,7 @@ class BottomNavBarPageState extends State<BottomNavBarPage> {
             BottomNavigationBarItem(
                 label: 'Ana Sayfa', icon: Icon(Icons.home)),
             BottomNavigationBarItem(
-                label: 'Baraj', icon: Icon(Icons.water_damage_sharp)),
+                label: 'Harita', icon: Icon(Icons.map)),
             BottomNavigationBarItem(
                 label: 'Ayarlar', icon: Icon(Icons.settings)),
           ],

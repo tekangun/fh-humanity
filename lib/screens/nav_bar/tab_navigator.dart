@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:humantiy/screens/barajMain.dart';
+import 'package:humantiy/screens/map_view.dart';
 import 'package:humantiy/screens/home.dart';
 import 'package:humantiy/screens/settings.dart';
 
@@ -28,10 +28,10 @@ class TabNavigatorState extends State<TabNavigator> {
             title: Text('Ana Sayfa'),
           ),
           body: Home());
-    } else if (widget.tabItem == 'Baraj') {
+    } else if (widget.tabItem == 'Harita') {
       child = Scaffold(
           appBar: AppBar(
-            title: Text('Baraj'),
+            title: Text('Harita'),
           ),
           body: BarajMain());
     } else if (widget.tabItem == 'Ayarlar') {

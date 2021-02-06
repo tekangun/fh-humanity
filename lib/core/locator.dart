@@ -9,5 +9,5 @@ void setUpLocators() {
 
   getIt.registerFactoryParam<DataServices, String, String>(
       (cityName, info) => DataServices(cityName: cityName));
-  getIt.registerLazySingleton(() => DataServicesBaraj());
+
 }

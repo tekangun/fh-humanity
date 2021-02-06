@@ -29,6 +29,7 @@ class BarajDataModel {
   var deneme;
   BarajDataModel({this.isim, this.deneme});
   factory BarajDataModel.fromSnapshots({Map<String, dynamic> barajDataMap}) {
+
     print(barajDataMap);
 
     return BarajDataModel(
