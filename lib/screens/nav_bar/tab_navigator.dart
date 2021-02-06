@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:humantiy/screens/map_view.dart';
+import 'package:humantiy/screens/map_page/map_view.dart';
 import 'package:humantiy/screens/home.dart';
 import 'package:humantiy/screens/settings.dart';
 
@@ -16,9 +16,6 @@ class TabNavigator extends StatefulWidget {
 }
 
 class TabNavigatorState extends State<TabNavigator> {
-
-
-
   @override
   Widget build(BuildContext context) {
     Widget child;
@@ -29,11 +26,7 @@ class TabNavigatorState extends State<TabNavigator> {
           ),
           body: Home());
     } else if (widget.tabItem == 'Harita') {
-      child = Scaffold(
-          appBar: AppBar(
-            title: Text('Harita'),
-          ),
-          body: BarajMain());
+      child = BarajMain();
     } else if (widget.tabItem == 'Ayarlar') {
       child = Scaffold(
           appBar: AppBar(

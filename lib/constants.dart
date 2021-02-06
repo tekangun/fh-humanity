@@ -1,4 +1,6 @@
 String appName = "Humanity";
+bool isSavedNewArea = false;
+bool isDefaultAreaData = true;
 String airToken = 'f40a3a67533bd1327dc9a070eafda09fe3678b91';
 List<String> citys = [
     'Adana',

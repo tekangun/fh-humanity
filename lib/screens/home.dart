@@ -1,7 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:humantiy/constants.dart';
 import 'package:humantiy/core/locator.dart';
 import 'package:humantiy/core/services/data_services.dart';
 import 'package:humantiy/models/air_data_model.dart';
@@ -16,7 +19,7 @@ class HomeState extends State<Home> {
   CarouselController buttonCarouselController = CarouselController();
   List<Widget> imageSliders = [];
   final double _radius = 16;
-  List<String> locationDataContent = [];
+  List<String> locationDataContent = ['null', 'null', 'null', 'null'];
   bool isLoading = false;
   var current = 0;
   final List<String> locationDataTitles = [
@@ -25,9 +28,10 @@ class HomeState extends State<Home> {
     'Pm10:',
     'Son Güncellenme Tarihi:'
   ];
-  final List<dynamic> myLocationsData = [
+  List<dynamic> myLocationsData = [];
+
+  final List<dynamic> myDefaultLocationsData = [
     ['41', '29', 'Catladikapi, Turkey'],
-    ['40', '51', 'Ardabil, İran']
   ];
 
   // void test() async{
@@ -40,18 +44,18 @@ class HomeState extends State<Home> {
     if (mounted) {
       setState(() {
         isLoading = true;
+        current = index;
       });
     }
     var coordinateLocationModel = getIt<DataServicesFromCoordinate>(
-      param1: myLocationsData[index][0],
-      param2: myLocationsData[index][1],
+      param1: myLocationsData[index][0].toString(),
+      param2: myLocationsData[index][1].toString(),
     );
     final airDataModel =
         await coordinateLocationModel.getCityDataFromCoordinate();
     if (mounted) {
       setState(() {
         isLoading = false;
-        current = index;
         locationDataContent.insert(0, airDataModel.co.toString());
         locationDataContent.insert(1, airDataModel.pm25.toString());
         locationDataContent.insert(2, airDataModel.pm10.toString());
@@ -195,37 +199,46 @@ class HomeState extends State<Home> {
               baseColor: Colors.grey,
               highlightColor: Colors.grey.withOpacity(.6),
               child: ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: locationDataTitles.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Container(
-                        alignment: Alignment.center,
-                        width: size.width * .7,
-                        height: 20,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.withOpacity(.3),
-                          borderRadius: BorderRadius.circular(_radius),
-                        ),
-
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: locationDataTitles.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Container(
+                      alignment: Alignment.center,
+                      width: size.width * .7,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(.3),
+                        borderRadius: BorderRadius.circular(_radius),
                       ),
-                );
-              },
-            ),
+                    ),
+                  );
+                },
+              ),
             ),
             duration: Duration(milliseconds: 200),
-            crossFadeState: isLoading
+            crossFadeState: isLoading || locationDataContent[3] == 'null'
                 ? CrossFadeState.showSecond
                 : CrossFadeState.showFirst,
           )),
     );
   }
 
+
+
   void loadDefaults() async {
     await Hive.openBox('myLocationsDb');
-    var box = Hive.box('myLocationsDb');
-    sliderIndexChange(0);
+    var box = await Hive.box('myLocationsDb');
+    var getSavedAreas = await box.get('savedAreas');
+    print(getSavedAreas);
+    if (mounted) {
+      setState(() {
+        getSavedAreas == null ? isDefaultAreaData = true : isDefaultAreaData = false;
+        myLocationsData = getSavedAreas ?? myDefaultLocationsData;
+      });
+    }
+    await sliderIndexChange(0);
   }
 
   @override
@@ -234,9 +247,67 @@ class HomeState extends State<Home> {
     super.initState();
   }
 
+  void deleteFromHive() async{
+    await Hive.openBox('myLocationsDb');
+    var box = await Hive.box('myLocationsDb');
+    var getSavedAreas = await box.get('savedAreas');
+    getSavedAreas.removeAt(current);
+    if(getSavedAreas.isEmpty){
+      if(mounted){
+        setState(() {
+          getSavedAreas = myDefaultLocationsData;
+          isDefaultAreaData = true;
+        });
+      }
+    }
+    await box.delete('savedAreas');
+    Navigator.pop(context);
+    loadDefaults();
+
+
+  }
+
+  void showDeleteCheck(String locationName) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: Text(
+                '$locationName adlı bölgeyi listenizden kaldırmak istediğinize emin misiniz?'),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    deleteFromHive();
+                  },
+                  child: Text('Kaldır')),
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'Vazgeç',
+                    style: TextStyle(color: Colors.grey[700]),
+                  )),
+            ],
+          );
+        });
+  }
+
+  setChanges(){
+    if(isSavedNewArea){
+      if(mounted){
+        setState(() {
+          isSavedNewArea = false;
+          loadDefaults();
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    setChanges();
     return Column(
       children: [
         Container(
@@ -244,6 +315,15 @@ class HomeState extends State<Home> {
           child: locationSlider(size),
         ),
         locationDetailsInfo(size),
+        Offstage(
+          offstage: isDefaultAreaData,
+          child: Center(
+          child: TextButton(
+            child: Text('Kaldır'),
+            onPressed: () => showDeleteCheck(myLocationsData[current][2]),
+          ),
+        ),
+        )
       ],
     );
   }
