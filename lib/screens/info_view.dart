@@ -35,7 +35,6 @@ class _DataInfoViewState extends State<DataInfoView> {
    if(mounted){
      setState(() {
        isSavedNewArea = true;
-       isDefaultAreaData ? isDefaultAreaData = false : null;
      });
    }
    Navigator.pop(context);

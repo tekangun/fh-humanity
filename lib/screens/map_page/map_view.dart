@@ -15,7 +15,7 @@ class BarajMain extends StatefulWidget {
 }
 
 class BarajMainState extends State<BarajMain> {
-  Future<void> _handleOnTap(LatLng latlng) {
+  void _handleOnTap(LatLng latlng) {
     final data =
         _getData(latlng.latitude.toString(), latlng.longitude.toString());
     routeInfo(context, data);

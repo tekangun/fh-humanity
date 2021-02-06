@@ -1,13 +1,14 @@
+import 'dart:ui';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:humantiy/constants.dart';
 import 'package:humantiy/core/locator.dart';
 import 'package:humantiy/core/services/data_services.dart';
-import 'package:humantiy/models/air_data_model.dart';
+import 'package:humantiy/core/services/location_services.dart';
 import 'package:shimmer/shimmer.dart';
 
 class Home extends StatefulWidget {
@@ -30,9 +31,6 @@ class HomeState extends State<Home> {
   ];
   List<dynamic> myLocationsData = [];
 
-  final List<dynamic> myDefaultLocationsData = [
-    ['41', '29', 'Catladikapi, Turkey'],
-  ];
 
   // void test() async{
   //   var model = getIt<DataServicesFromCoordinate>(param1: '41', param2: '29',);
@@ -225,17 +223,58 @@ class HomeState extends State<Home> {
     );
   }
 
+  Widget showLoading(BuildContext context) {
+    return WillPopScope(
+        onWillPop: () async => false,
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+          child: SimpleDialog(
+              backgroundColor: Colors.transparent,
+              children: <Widget>[
+                Center(
+                  child: Container(
+                    child: Column(children: [
+                      CircularProgressIndicator(),
+                    ]),
+                  ),
+                )
+              ]),
+        ));
+  }
 
+  void checkCurrentLocation() async {
+    await Hive.openBox('myLocationsDb');
+    var box = await Hive.box('myLocationsDb');
+    var locationServices = getIt<LocationServices>();
+    final position = await locationServices.getPosition();
+
+    var coordinateLocationModel = getIt<DataServicesFromCoordinate>(
+      param1: position.latitude.toString(),
+      param2: position.longitude.toString(),
+    );
+    final airDataModel =
+        await coordinateLocationModel.getCityDataFromCoordinate();
+    List<dynamic> tempAreas = await box.get('savedAreas') ?? [];
+    tempAreas.isNotEmpty ? tempAreas.removeAt(0) : null;
+    tempAreas
+        .insert(0, [position.latitude, position.longitude, airDataModel.name]);
+    await box.put('savedAreas', tempAreas);
+    if (mounted) {
+      setState(() {
+        isGetCurrentLocation = true;
+      });
+    }
+  }
 
   void loadDefaults() async {
+    await checkCurrentLocation();
     await Hive.openBox('myLocationsDb');
     var box = await Hive.box('myLocationsDb');
     var getSavedAreas = await box.get('savedAreas');
     print(getSavedAreas);
     if (mounted) {
       setState(() {
-        getSavedAreas == null ? isDefaultAreaData = true : isDefaultAreaData = false;
-        myLocationsData = getSavedAreas ?? myDefaultLocationsData;
+        myLocationsData = getSavedAreas;
       });
     }
     await sliderIndexChange(0);
@@ -247,24 +286,13 @@ class HomeState extends State<Home> {
     super.initState();
   }
 
-  void deleteFromHive() async{
+  void deleteFromHive() async {
     await Hive.openBox('myLocationsDb');
     var box = await Hive.box('myLocationsDb');
     var getSavedAreas = await box.get('savedAreas');
     getSavedAreas.removeAt(current);
-    if(getSavedAreas.isEmpty){
-      if(mounted){
-        setState(() {
-          getSavedAreas = myDefaultLocationsData;
-          isDefaultAreaData = true;
-        });
-      }
-    }
-    await box.delete('savedAreas');
     Navigator.pop(context);
     loadDefaults();
-
-
   }
 
   void showDeleteCheck(String locationName) {
@@ -293,9 +321,9 @@ class HomeState extends State<Home> {
         });
   }
 
-  setChanges(){
-    if(isSavedNewArea){
-      if(mounted){
+  void setChanges() {
+    if (isSavedNewArea) {
+      if (mounted) {
         setState(() {
           isSavedNewArea = false;
           loadDefaults();
@@ -308,23 +336,26 @@ class HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     setChanges();
-    return Column(
-      children: [
-        Container(
-          padding: EdgeInsets.only(top: 20, bottom: 20),
-          child: locationSlider(size),
-        ),
-        locationDetailsInfo(size),
-        Offstage(
-          offstage: isDefaultAreaData,
-          child: Center(
-          child: TextButton(
-            child: Text('Kaldır'),
-            onPressed: () => showDeleteCheck(myLocationsData[current][2]),
-          ),
-        ),
-        )
-      ],
-    );
+    return isGetCurrentLocation
+        ? Column(
+            children: [
+              Container(
+                padding: EdgeInsets.only(top: 20, bottom: 20),
+                child: locationSlider(size),
+              ),
+              locationDetailsInfo(size),
+              Offstage(
+                offstage: current == 0,
+                child: Center(
+                  child: TextButton(
+                    child: Text('Kaldır'),
+                    onPressed: () =>
+                        showDeleteCheck(myLocationsData[current][2]),
+                  ),
+                ),
+              )
+            ],
+          )
+        : showLoading(context);
   }
 }

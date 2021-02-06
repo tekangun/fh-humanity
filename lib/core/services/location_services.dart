@@ -1,4 +1,7 @@
+import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 
 class LocationServices{
@@ -16,6 +19,7 @@ class LocationServices{
 
   permission = await Geolocator.checkPermission();
   if (permission == LocationPermission.deniedForever) {
+    await SystemNavigator.pop();
     return Future.error(
         'Location permissions are permantly denied, we cannot request permissions.');
   }
@@ -24,6 +28,7 @@ class LocationServices{
     permission = await Geolocator.requestPermission();
     if (permission != LocationPermission.whileInUse &&
         permission != LocationPermission.always) {
+      await SystemNavigator.pop();
       return Future.error(
           'Location permissions are denied (actual value: $permission).');
     }
