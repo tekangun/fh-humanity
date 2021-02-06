@@ -29,20 +29,20 @@ class HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    var markers = tappedPoints.map((latlng) {
-      return Marker(
-        width: 80.0,
-        height: 80.0,
-        point: latlng,
-        builder: (ctx) => Container(
-          child: Icon(
-            Icons.location_on,
-            color: Colors.red,
-            size: 50,
-          ),
-        ),
-      );
-    }).toList();
+    // var markers = tappedPoints.map((latlng) {
+    //   return Marker(
+    //     width: 80.0,
+    //     height: 80.0,
+    //     point: latlng,
+    //     builder: (ctx) => Container(
+    //       child: Icon(
+    //         Icons.location_on,
+    //         color: Colors.red,
+    //         size: 50,
+    //       ),
+    //     ),
+    //   );
+    // }).toList();
     return Scaffold(
       body: Center(
         child: Container(
@@ -65,7 +65,7 @@ class HomeState extends State<Home> {
                 subdomains: ["0", "1", "2", "3"],
                 tileProvider: NonCachingNetworkTileProvider(),
               ),
-              MarkerLayerOptions(markers: markers)
+              // MarkerLayerOptions(markers: markers)
             ],
           ),
         ),
