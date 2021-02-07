@@ -41,8 +41,8 @@ class HomeState extends State<Home> {
   void sliderIndexChange(var index) async {
     if (mounted) {
       setState(() {
-        isLoading = true;
         current = index;
+        isLoading = true;
       });
     }
     var coordinateLocationModel = getIt<DataServicesFromCoordinate>(
@@ -246,7 +246,8 @@ class HomeState extends State<Home> {
   void checkCurrentLocation() async {
     await Hive.openBox('myLocationsDb');
     var box = await Hive.box('myLocationsDb');
-    var locationServices = getIt<LocationServices>();
+    if(box.get('savedAreas') == null){
+      var locationServices = getIt<LocationServices>();
     final position = await locationServices.getPosition();
 
     var coordinateLocationModel = getIt<DataServicesFromCoordinate>(
@@ -260,6 +261,7 @@ class HomeState extends State<Home> {
     tempAreas
         .insert(0, [position.latitude, position.longitude, airDataModel.name]);
     await box.put('savedAreas', tempAreas);
+    }
     if (mounted) {
       setState(() {
         isGetCurrentLocation = true;
@@ -338,25 +340,27 @@ class HomeState extends State<Home> {
     final size = MediaQuery.of(context).size;
     setChanges();
     return isGetCurrentLocation
-        ? Column(
-            children: [
-              Container(
-                padding: EdgeInsets.only(top: 20, bottom: 20),
-                child: locationSlider(size),
-              ),
-              locationDetailsInfo(size),
-              Offstage(
-                offstage: current == 0,
-                child: Center(
-                  child: TextButton(
-                    child: Text('Kaldır'),
-                    onPressed: () =>
-                        showDeleteCheck(myLocationsData[current][2]),
-                  ),
+        ? SingleChildScrollView(
+          child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.only(top: 20, bottom: 20),
+                  child: locationSlider(size),
                 ),
-              )
-            ],
-          )
+                locationDetailsInfo(size),
+                Offstage(
+                  offstage: current == 0,
+                  child: Center(
+                    child: TextButton(
+                      child: Text('Kaldır'),
+                      onPressed: () =>
+                          showDeleteCheck(myLocationsData[current][2]),
+                    ),
+                  ),
+                )
+              ],
+            ),
+        )
         : showLoading(context);
   }
 }

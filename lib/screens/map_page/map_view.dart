@@ -17,7 +17,6 @@ class MapView extends StatefulWidget {
 }
 
 class MapViewState extends State<MapView> {
-  var box = Hive.box('myLocationsDb');
   var markerList = <Marker>[];
 
   @override
@@ -27,15 +26,19 @@ class MapViewState extends State<MapView> {
   }
 
   Future _getLocalArea() async {
+    await Hive.openBox('myLocationsDb');
+    var box = Hive.box('myLocationsDb');
     var savedAreas = await box.get('savedAreas');
     return savedAreas;
   }
 
   void _loadDefaults() async {
-    await Hive.openBox('myLocationsDb');
+
   }
 
   void _saveAreaToLocal(data) async {
+    await Hive.openBox('myLocationsDb');
+    var box = Hive.box('myLocationsDb');
     var savedAreas = await box.get('savedAreas');
     var newSaveArea = compileAreaDataForSave(await data);
     savedAreas != null ? savedAreas.add(newSaveArea[0]) : null;
