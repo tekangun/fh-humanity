@@ -56,7 +56,7 @@ class MapViewState extends State<MapView> {
   List<dynamic> compileAreaDataForSave(AirDataModel airDataModel) {
     var tempSavedAreas = [];
     tempSavedAreas
-        .insert(0, [airDataModel.lat, airDataModel.lng, airDataModel.name]);
+        .insert(0, [airDataModel.lat, airDataModel.lng, airDataModel.name, airDataModel.aqi]);
     return tempSavedAreas;
   }
 
@@ -145,6 +145,24 @@ class MapViewState extends State<MapView> {
     );
   }
 
+  Color getColor(aqi) {
+    var color = Colors.white;
+    if (double.parse(aqi.toString()) <= 50) {
+      color = Colors.green;
+    } else if (double.parse(aqi.toString()) > 50 || double.parse(aqi.toString()) <= 100) {
+      color = Colors.yellow[700];
+    } else if (double.parse(aqi.toString()) > 100 || double.parse(aqi.toString()) <= 150) {
+      color = Colors.deepOrange;
+    } else if (double.parse(aqi.toString()) > 150 || double.parse(aqi.toString()) <= 200) {
+      color = Colors.red;
+    } else if (double.parse(aqi.toString()) > 200 || double.parse(aqi.toString()) <= 300) {
+      color = Colors.purple;
+    } else if (double.parse(aqi.toString()) > 200 || double.parse(aqi.toString()) <= 300) {
+      color = Colors.purple[900];
+    }
+    return color;
+  }
+
   void createMarkers(data) {
     var newMarker = Marker(
       width: 80.0,
@@ -155,7 +173,7 @@ class MapViewState extends State<MapView> {
         children: <Widget>[
           Icon(
             Icons.location_on,
-            color: Colors.red,
+            color: getColor(data[data.length-1]),
             size: 50,
           ),
         ],
