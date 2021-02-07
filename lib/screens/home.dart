@@ -63,6 +63,30 @@ class HomeState extends State<Home> {
     }
   }
 
+  Widget sliderImageType(Size size, var aqi) {
+    var imagePath = "";
+    if(aqi <= 50){
+      imagePath = localImagePath[0];
+    }
+    else if(aqi <= 100){
+      imagePath = localImagePath[1];
+    }
+     else if(aqi <= 150){
+      imagePath = localImagePath[2];
+    }
+      else if(aqi <= 200){
+      imagePath = localImagePath[3];
+    }
+       else if(aqi <= 300){
+      imagePath = localImagePath[4];
+    }
+    return Image.asset(
+      imagePath,
+      width: size.width * 0.9,
+      fit: BoxFit.cover,
+    );
+  }
+
   Widget locationSlider(Size size) {
     return Column(
       children: [
@@ -83,11 +107,7 @@ class HomeState extends State<Home> {
                             child: Container(
                               color: Colors.white,
                               height: size.height * 0.5, // 180
-                              child: Image.network(
-                                'https://i.ytimg.com/vi/hUxV79NZ0fs/maxresdefault.jpg',
-                                width: size.width * 0.9,
-                                fit: BoxFit.cover,
-                              ),
+                              child: sliderImageType(size,myLocationsData[index][3]),
                             ),
                           ),
                           Positioned(
@@ -132,6 +152,7 @@ class HomeState extends State<Home> {
             );
           },
           options: CarouselOptions(
+            initialPage: 0,
             enlargeCenterPage: true,
             enableInfiniteScroll: false,
             enlargeStrategy: CenterPageEnlargeStrategy.height,
@@ -162,66 +183,65 @@ class HomeState extends State<Home> {
 
   Widget locationDetailsInfo(Size size) {
     return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(_radius),
-      ),
-      child: Container(
-          width: size.width * 0.9,
-          padding: EdgeInsets.all(8.0),
-          child: AnimatedCrossFade(
-            firstChild: ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: locationDataTitles.length,
-              itemBuilder: (context, index) {
-                return Offstage(
-                  offstage: locationDataContent[index] == 'null',
-                  child: ListTile(
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          locationDataTitles[index],
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        Text(
-                          locationDataContent[index],
-                          style: TextStyle(fontSize: 14),
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-            secondChild: Shimmer.fromColors(
-              baseColor: Colors.grey,
-              highlightColor: Colors.grey.withOpacity(.6),
-              child: ListView.builder(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(_radius),
+        ),
+        child: Container(
+            width: size.width * 0.9,
+            padding: EdgeInsets.all(8.0),
+            child: AnimatedCrossFade(
+              firstChild: ListView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: locationDataTitles.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Container(
-                      alignment: Alignment.center,
-                      width: size.width * .7,
-                      height: 20,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(.3),
-                        borderRadius: BorderRadius.circular(_radius),
+                  return Offstage(
+                    offstage: locationDataContent[index] == 'null',
+                    child: ListTile(
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            locationDataTitles[index],
+                            style: TextStyle(fontSize: 14),
+                          ),
+                          Text(
+                            locationDataContent[index],
+                            style: TextStyle(fontSize: 14),
+                          )
+                        ],
                       ),
                     ),
                   );
                 },
               ),
-            ),
-            duration: Duration(milliseconds: 200),
-            crossFadeState: isLoading || locationDataContent[3] == 'null'
-                ? CrossFadeState.showSecond
-                : CrossFadeState.showFirst,
-          )),
-    );
+              secondChild: Shimmer.fromColors(
+                baseColor: Colors.grey,
+                highlightColor: Colors.grey.withOpacity(.6),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: locationDataTitles.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Container(
+                        alignment: Alignment.center,
+                        width: size.width * .7,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(.3),
+                          borderRadius: BorderRadius.circular(_radius),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              duration: Duration(milliseconds: 200),
+              crossFadeState: isLoading || locationDataContent[3] == 'null'
+                  ? CrossFadeState.showSecond
+                  : CrossFadeState.showFirst,
+            )));
   }
 
   Widget showLoading(BuildContext context) {
@@ -246,21 +266,29 @@ class HomeState extends State<Home> {
   void checkCurrentLocation() async {
     await Hive.openBox('myLocationsDb');
     var box = await Hive.box('myLocationsDb');
-    if(box.get('savedAreas') == null){
-      var locationServices = getIt<LocationServices>();
-    final position = await locationServices.getPosition();
 
-    var coordinateLocationModel = getIt<DataServicesFromCoordinate>(
-      param1: position.latitude.toString(),
-      param2: position.longitude.toString(),
-    );
-    final airDataModel =
-        await coordinateLocationModel.getCityDataFromCoordinate();
-    List<dynamic> tempAreas = await box.get('savedAreas') ?? [];
-    tempAreas.isNotEmpty ? tempAreas.removeAt(0) : null;
-    tempAreas
-        .insert(0, [position.latitude, position.longitude, airDataModel.name]);
-    await box.put('savedAreas', tempAreas);
+    if (box.get('savedAreas') == null) {
+      var locationServices = getIt<LocationServices>();
+      await locationServices.getPosition().then((position) async {
+        var coordinateLocationModel = getIt<DataServicesFromCoordinate>(
+          param1: position.latitude.toString(),
+          param2: position.longitude.toString(),
+        );
+        final airDataModel =
+            await coordinateLocationModel.getCityDataFromCoordinate();
+        List<dynamic> tempAreas = await box.get('savedAreas') ?? [];
+        tempAreas.isNotEmpty ? tempAreas.removeAt(0) : null;
+        tempAreas.insert(0, [
+          position.latitude,
+          position.longitude,
+          airDataModel.name,
+          airDataModel.aqi
+        ]);
+        await box.put('savedAreas', tempAreas);
+        sliderIndexChange(0);
+      }).catchError((error) {
+        print(error);
+      });
     }
     if (mounted) {
       setState(() {
@@ -274,7 +302,6 @@ class HomeState extends State<Home> {
     await Hive.openBox('myLocationsDb');
     var box = await Hive.box('myLocationsDb');
     var getSavedAreas = await box.get('savedAreas');
-    print(getSavedAreas);
     if (mounted) {
       setState(() {
         myLocationsData = getSavedAreas;
@@ -328,6 +355,7 @@ class HomeState extends State<Home> {
     if (isSavedNewArea) {
       if (mounted) {
         setState(() {
+          current = 0;
           isSavedNewArea = false;
           loadDefaults();
         });
@@ -341,7 +369,7 @@ class HomeState extends State<Home> {
     setChanges();
     return isGetCurrentLocation
         ? SingleChildScrollView(
-          child: Column(
+            child: Column(
               children: [
                 Container(
                   padding: EdgeInsets.only(top: 20, bottom: 20),
@@ -360,7 +388,7 @@ class HomeState extends State<Home> {
                 )
               ],
             ),
-        )
+          )
         : showLoading(context);
   }
 }
