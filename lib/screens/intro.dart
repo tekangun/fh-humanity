@@ -21,16 +21,16 @@ class _IntroScreenState extends State<IntroScreen> {
     super.initState();
     slides.add(
       Slide(
-        title: 'KONUM SEÇİN',
+        title: 'Konum Seçin',
         styleTitle: TextStyle(
-            color: Color(0xff3da4ab),
+            color: Colors.indigo[900],
             fontSize: 30.0,
             fontWeight: FontWeight.bold,
             fontFamily: 'RobotoMono'),
         description:
             'Hava kalite bilgisini görmek istediğiniz konumu seçin veya halihazırdaki konumuzu uygulama ile paylaşın.',
         styleDescription: TextStyle(
-            color: Color(0xfffe9c8f),
+            color: Colors.indigo[300],
             fontSize: 20.0,
             fontStyle: FontStyle.italic,
             fontFamily: 'Raleway'),
@@ -39,16 +39,16 @@ class _IntroScreenState extends State<IntroScreen> {
     );
     slides.add(
       Slide(
-        title: 'HAVA KALİTESİNİ GÖRÜNTÜLEYİN',
+        title: 'Hava Kalitesini Görüntüleyin',
         styleTitle: TextStyle(
-            color: Color(0xff3da4ab),
+            color: Colors.indigo[900],
             fontSize: 30.0,
             fontWeight: FontWeight.bold,
             fontFamily: 'RobotoMono'),
         description:
             'Seçtiğiniz konumlardaki hava kalitesi, PM25, PM10 ve CO değerlerini görüntüleyin.',
         styleDescription: TextStyle(
-            color: Color(0xfffe9c8f),
+            color: Colors.indigo[300],
             fontSize: 20.0,
             fontStyle: FontStyle.italic,
             fontFamily: 'Raleway'),
@@ -57,16 +57,16 @@ class _IntroScreenState extends State<IntroScreen> {
     );
     slides.add(
       Slide(
-        title: 'HARİTAYI KULLANIN',
+        title: 'Haritayı Kullanın',
         styleTitle: TextStyle(
-            color: Color(0xff3da4ab),
+            color: Colors.indigo[900],
             fontSize: 30.0,
             fontWeight: FontWeight.bold,
             fontFamily: 'RobotoMono'),
         description:
             'Harita üzerinden yeni konumlar ekleyin veya eklenen konumları görüntüleyin.',
         styleDescription: TextStyle(
-            color: Color(0xfffe9c8f),
+            color: Colors.indigo[300],
             fontSize: 20.0,
             fontStyle: FontStyle.italic,
             fontFamily: 'Raleway'),
@@ -86,7 +86,7 @@ class _IntroScreenState extends State<IntroScreen> {
   Widget renderNextBtn() {
     return Icon(
       Icons.navigate_next,
-      color: Color(0xffffcc5c),
+      color: Colors.indigo,
       size: 35.0,
     );
   }
@@ -94,14 +94,14 @@ class _IntroScreenState extends State<IntroScreen> {
   Widget renderDoneBtn() {
     return Icon(
       Icons.done,
-      color: Color(0xffffcc5c),
+      color: Colors.indigo,
     );
   }
 
   Widget renderSkipBtn() {
     return Icon(
       Icons.skip_next,
-      color: Color(0xffffcc5c),
+      color: Colors.indigo,
     );
   }
 
@@ -163,8 +163,8 @@ class _IntroScreenState extends State<IntroScreen> {
 
       // Skip button
       renderSkipBtn: renderSkipBtn(),
-      colorSkipBtn: Color(0x33ffcc5c),
-      highlightColorSkipBtn: Color(0xffffcc5c),
+      colorSkipBtn: Colors.indigo[100],
+      highlightColorSkipBtn: Colors.indigo,
 
       // Next button
       renderNextBtn: renderNextBtn(),
@@ -172,11 +172,11 @@ class _IntroScreenState extends State<IntroScreen> {
       // Done button
       renderDoneBtn: renderDoneBtn(),
       onDonePress: onDonePress,
-      colorDoneBtn: Color(0x33ffcc5c),
-      highlightColorDoneBtn: Color(0xffffcc5c),
+      colorDoneBtn: Colors.indigo[100],
+      highlightColorDoneBtn: Colors.indigo,
 
       // Dot indicator
-      colorDot: Color(0xffffcc5c),
+      colorDot: Colors.indigo,
       sizeDot: 13.0,
       // typeDotAnimation: dotSliderAnimation.SIZE_TRANSITION,
 
