@@ -20,17 +20,17 @@ class HomeState extends State<Home> {
   CarouselController buttonCarouselController = CarouselController();
   List<Widget> imageSliders = [];
   final double _radius = 16;
-  List<String> locationDataContent = ['null', 'null', 'null', 'null'];
+  List<String> locationDataContent = ['null', 'null', 'null', 'null', 'null'];
   bool isLoading = false;
   var current = 0;
   final List<String> locationDataTitles = [
-    'Karbondioksit:',
+    'Hava Kalitesi:',
+    'Karbonmonoksit:',
     'Pm25:',
     'Pm10:',
     'Son Güncellenme Tarihi:'
   ];
   List<dynamic> myLocationsData = [];
-
 
   // void test() async{
   //   var model = getIt<DataServicesFromCoordinate>(param1: '41', param2: '29',);
@@ -54,10 +54,11 @@ class HomeState extends State<Home> {
     if (mounted) {
       setState(() {
         isLoading = false;
-        locationDataContent.insert(0, airDataModel.co.toString());
-        locationDataContent.insert(1, airDataModel.pm25.toString());
-        locationDataContent.insert(2, airDataModel.pm10.toString());
-        locationDataContent.insert(3, airDataModel.time.toString());
+        locationDataContent.insert(0, airDataModel.aqi.toString());
+        locationDataContent.insert(1, airDataModel.co.toString());
+        locationDataContent.insert(2, airDataModel.pm25.toString());
+        locationDataContent.insert(3, airDataModel.pm10.toString());
+        locationDataContent.insert(4, airDataModel.time.toString());
       });
     }
   }

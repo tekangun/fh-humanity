@@ -22,15 +22,15 @@ class TabNavigatorState extends State<TabNavigator> {
     if (widget.tabItem == 'Ana Sayfa') {
       child = Scaffold(
           appBar: AppBar(
-            title: Text('Ana Sayfa'),
+            title: Text('humanity'),
           ),
           body: Home());
     } else if (widget.tabItem == 'Harita') {
-      child = BarajMain();
+      child = MapView();
     } else if (widget.tabItem == 'Ayarlar') {
       child = Scaffold(
           appBar: AppBar(
-            title: Text('Ayarlar'),
+            title: Text('humanity'),
           ),
           body: Settings());
     }

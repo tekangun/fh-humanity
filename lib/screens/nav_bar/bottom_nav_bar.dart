@@ -36,10 +36,6 @@ class BottomNavBarPageState extends State<BottomNavBarPage> {
     }
   }
 
-
-
-
-
   @override
   void initState() {
     _selectTab(pageKeys[0], 0);
@@ -57,15 +53,14 @@ class BottomNavBarPageState extends State<BottomNavBarPage> {
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
+          showUnselectedLabels: false,
           currentIndex: currentIndex,
           onTap: (index) {
             _selectTab(pageKeys[index], index);
           },
           items: [
-            BottomNavigationBarItem(
-                label: 'Ana Sayfa', icon: Icon(Icons.home)),
-            BottomNavigationBarItem(
-                label: 'Harita', icon: Icon(Icons.map)),
+            BottomNavigationBarItem(label: 'Ana Sayfa', icon: Icon(Icons.home)),
+            BottomNavigationBarItem(label: 'Harita', icon: Icon(Icons.map)),
             BottomNavigationBarItem(
                 label: 'Ayarlar', icon: Icon(Icons.settings)),
           ],
