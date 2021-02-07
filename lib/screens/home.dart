@@ -28,7 +28,7 @@ class HomeState extends State<Home> {
     'Karbonmonoksit:',
     'Pm2.5:',
     'Pm10:',
-    'Son Güncellenme Tarihi:'
+    'Güncellenme:'
   ];
   List<dynamic> myLocationsData = [];
 
@@ -51,6 +51,8 @@ class HomeState extends State<Home> {
     );
     final airDataModel =
         await coordinateLocationModel.getCityDataFromCoordinate();
+    var time = airDataModel.time.toString();
+    time = time.substring(0,time.length -3);
     if (mounted) {
       setState(() {
         isLoading = false;
@@ -58,7 +60,7 @@ class HomeState extends State<Home> {
         locationDataContent.insert(1, airDataModel.co.toString());
         locationDataContent.insert(2, airDataModel.pm25.toString());
         locationDataContent.insert(3, airDataModel.pm10.toString());
-        locationDataContent.insert(4, airDataModel.time.toString());
+        locationDataContent.insert(4, time);
       });
     }
   }
@@ -208,7 +210,7 @@ class HomeState extends State<Home> {
                           ),
                           Text(
                             locationDataContent[index],
-                            style: TextStyle(fontSize: 14),
+                            style: TextStyle(fontSize: 14)
                           )
                         ],
                       ),
@@ -286,7 +288,6 @@ class HomeState extends State<Home> {
           airDataModel.aqi
         ]);
         await box.put('savedAreas', tempAreas);
-        sliderIndexChange(0);
       }).catchError((error) {
         print(error);
       });
