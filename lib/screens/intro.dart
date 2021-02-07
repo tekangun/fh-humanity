@@ -19,14 +19,14 @@ class _IntroScreenState extends State<IntroScreen> {
     super.initState();
     slides.add(
       Slide(
-        title: 'SCHOOL',
+        title: 'KONUM SEÇİN',
         styleTitle: TextStyle(
             color: Color(0xff3da4ab),
             fontSize: 30.0,
             fontWeight: FontWeight.bold,
             fontFamily: 'RobotoMono'),
         description:
-            'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.',
+            'Hava kalite bilgisini görmek istediğiniz konumu seçin veya halihazırdaki konumuzu uygulama ile paylaşın.',
         styleDescription: TextStyle(
             color: Color(0xfffe9c8f),
             fontSize: 20.0,
@@ -37,14 +37,14 @@ class _IntroScreenState extends State<IntroScreen> {
     );
     slides.add(
       Slide(
-        title: 'MUSEUM',
+        title: 'HAVA KALİTESİNİ GÖRÜNTÜLEYİN',
         styleTitle: TextStyle(
             color: Color(0xff3da4ab),
             fontSize: 30.0,
             fontWeight: FontWeight.bold,
             fontFamily: 'RobotoMono'),
         description:
-            'Ye indulgence unreserved connection alteration appearance',
+            'Seçtiğiniz konumlardaki hava kalitesi, PM25, PM10 ve CO değerlerini görüntüleyin.',
         styleDescription: TextStyle(
             color: Color(0xfffe9c8f),
             fontSize: 20.0,
@@ -55,14 +55,14 @@ class _IntroScreenState extends State<IntroScreen> {
     );
     slides.add(
       Slide(
-        title: 'COFFEE SHOP',
+        title: 'HARİTAYI KULLANIN',
         styleTitle: TextStyle(
             color: Color(0xff3da4ab),
             fontSize: 30.0,
             fontWeight: FontWeight.bold,
             fontFamily: 'RobotoMono'),
         description:
-            'Much evil soon high in hope do view. Out may few northward believing attempted. Yet timed being songs marry one defer men our. Although finished blessing do of',
+            'Harita üzerinden yeni konumlar ekleyin veya eklenen konumları görüntüleyin.',
         styleDescription: TextStyle(
             color: Color(0xfffe9c8f),
             fontSize: 20.0,
