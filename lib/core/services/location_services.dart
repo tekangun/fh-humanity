@@ -28,6 +28,6 @@ class LocationServices {
       }
     }
 
-    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.medium, forceAndroidLocationManager: true);
+    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.medium,forceAndroidLocationManager: true);
   }
 }
