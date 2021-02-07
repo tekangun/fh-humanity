@@ -1,6 +1,5 @@
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:hive/hive.dart';
 
 class LocationServices {
 

@@ -64,7 +64,7 @@ class HomeState extends State<Home> {
   }
 
   Widget sliderImageType(Size size, var aqi) {
-    var imagePath = "";
+    var imagePath = '';
     if(aqi <= 50){
       imagePath = localImagePath[0];
     }
