@@ -59,7 +59,6 @@ flutter:
   # assets:
   #   - assets/tr-iller-4326.geojson
   assets:
-    - assets/tr-iller-4326.geojson
     - assets/images/
   #   - images/a_dot_ham.jpeg
 
