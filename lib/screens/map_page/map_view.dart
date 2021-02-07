@@ -162,6 +162,7 @@ class MapViewState extends State<MapView> {
   }
 
   FlutterMap buildFlutterMap(AsyncSnapshot snapshot) {
+    markerList = <Marker>[];
     var data = snapshot.data;
     data.forEach((location) => createMarkers(location));
     return FlutterMap(
