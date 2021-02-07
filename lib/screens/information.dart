@@ -10,7 +10,7 @@ class Information extends StatelessWidget {
       ),
       body: SafeArea(
         child: Container(
-          padding: const EdgeInsets.all(1),
+          padding: const EdgeInsets.all(8),
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
