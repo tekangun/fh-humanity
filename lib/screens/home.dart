@@ -91,6 +91,7 @@ class HomeState extends State<Home> {
     return Column(
       children: [
         CarouselSlider.builder(
+          carouselController: buttonCarouselController,
           itemCount: myLocationsData.length,
           itemBuilder: (BuildContext context, int index, int num) {
             return Container(
@@ -321,6 +322,7 @@ class HomeState extends State<Home> {
     var box = await Hive.box('myLocationsDb');
     var getSavedAreas = await box.get('savedAreas');
     getSavedAreas.removeAt(current);
+    buttonCarouselController.jumpToPage(0);
     Navigator.pop(context);
     loadDefaults();
   }
