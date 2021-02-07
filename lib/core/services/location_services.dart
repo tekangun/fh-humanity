@@ -4,7 +4,6 @@ import 'package:geolocator/geolocator.dart';
 class LocationServices {
   Future<Position> getPosition() async {
     /// Latitude: 37.9324002, Longitude: 40.1843365
-
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -29,6 +28,6 @@ class LocationServices {
       }
     }
 
-    return await Geolocator.getCurrentPosition();
+    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.medium, forceAndroidLocationManager: true);
   }
 }
