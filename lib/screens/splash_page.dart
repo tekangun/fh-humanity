@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:hive/hive.dart';
+import 'package:humantiy/screens/intro.dart';
 import 'package:humantiy/screens/nav_bar/bottom_nav_bar.dart';
 
 
@@ -18,8 +20,16 @@ class SplashPageState extends State<SplashPage>{
 
 
   Future welcomeScreen() async{
+    await Hive.openBox('loginState');
+    var box = await Hive.box('loginState');
+    var status = await box.get('loginStatus');
     Timer(Duration(seconds: 3), () {
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => BottomNavBarPage()), (route) => false);
+      if(status == 1){
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => BottomNavBarPage()), (route) => false);
+      }
+      else {
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => IntroScreen()), (route) => false);
+      }
     });
   }
 

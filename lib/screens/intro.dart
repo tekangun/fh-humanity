@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:humantiy/screens/nav_bar/bottom_nav_bar.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:intro_slider/slide_object.dart';
 
@@ -32,7 +34,7 @@ class _IntroScreenState extends State<IntroScreen> {
             fontSize: 20.0,
             fontStyle: FontStyle.italic,
             fontFamily: 'Raleway'),
-        pathImage: 'assets/0_50.png',
+        pathImage: 'assets/images/0_50.png',
       ),
     );
     slides.add(
@@ -50,7 +52,7 @@ class _IntroScreenState extends State<IntroScreen> {
             fontSize: 20.0,
             fontStyle: FontStyle.italic,
             fontFamily: 'Raleway'),
-        pathImage: 'assets/51_100.png',
+        pathImage: 'assets/images/51_100.png',
       ),
     );
     slides.add(
@@ -68,14 +70,13 @@ class _IntroScreenState extends State<IntroScreen> {
             fontSize: 20.0,
             fontStyle: FontStyle.italic,
             fontFamily: 'Raleway'),
-        pathImage: 'assets/101_150.png',
+        pathImage: 'assets/images/101_150.png',
       ),
     );
   }
 
   void onDonePress() {
-    // Back to the first tab
-    goToTab(0);
+    saveFirstLogin();
   }
 
   void onTabChangeCompleted(index) {
@@ -146,6 +147,12 @@ class _IntroScreenState extends State<IntroScreen> {
       ));
     }
     return tabs;
+  }
+
+  void saveFirstLogin() async{
+    var box = await Hive.box('loginState');
+    await box.put('loginStatus',1);
+     await Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => BottomNavBarPage()), (route) => false);
   }
 
   @override
