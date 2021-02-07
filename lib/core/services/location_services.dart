@@ -10,14 +10,14 @@ class LocationServices {
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
+      await SystemNavigator.pop();
       return Future.error('Location services are disabled.');
     }
 
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.deniedForever) {
       await SystemNavigator.pop();
-      return Future.error(
-          'Location permissions are permantly denied, we cannot request permissions.');
+      return Future.error('denied');
     }
 
     if (permission == LocationPermission.denied) {
@@ -25,20 +25,10 @@ class LocationServices {
       if (permission != LocationPermission.whileInUse &&
           permission != LocationPermission.always) {
         await SystemNavigator.pop();
-        return Future.error(
-            'Location permissions are permantly denied, we cannot request permissions.');
+        return Future.error('denied forever');
       }
-
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission != LocationPermission.whileInUse &&
-            permission != LocationPermission.always) {
-          return Future.error(
-              'Location permissions are denied (actual value: $permission).');
-        }
-      }
-      print(await Geolocator.getCurrentPosition());
-      return await Geolocator.getCurrentPosition();
     }
+
+    return await Geolocator.getCurrentPosition();
   }
 }

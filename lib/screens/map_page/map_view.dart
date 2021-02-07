@@ -6,7 +6,7 @@ import 'package:humantiy/constants.dart';
 import 'package:humantiy/core/services/data_services.dart';
 import 'package:humantiy/models/air_data_model.dart';
 import 'package:humantiy/screens/info_view.dart';
-import 'package:humantiy/screens/map_page/city_search_delegate.dart';
+// import 'package:humantiy/screens/map_page/city_search_delegate.dart';
 import 'package:latlong/latlong.dart';
 
 import '../../core/locator.dart';
@@ -56,7 +56,7 @@ class MapViewState extends State<MapView> {
   List<dynamic> compileAreaDataForSave(AirDataModel airDataModel) {
     var tempSavedAreas = [];
     tempSavedAreas
-        .insert(0, [airDataModel.lat, airDataModel.lng, airDataModel.name]);
+        .insert(0, [airDataModel.lat, airDataModel.lng, airDataModel.name,airDataModel.aqi]);
     return tempSavedAreas;
   }
 
@@ -121,20 +121,20 @@ class MapViewState extends State<MapView> {
     return Scaffold(
       appBar: AppBar(
         title: Text('humanity'),
-        actions: [
-          Container(
-            padding: EdgeInsets.only(right: 10),
-            child: InkWell(
-              onTap: () {
-                showSearch(
-                  context: context,
-                  delegate: CitySearchDelegate(),
-                );
-              },
-              child: Icon(Icons.search),
-            ),
-          )
-        ],
+        // actions: [
+        //   Container(
+        //     padding: EdgeInsets.only(right: 10),
+        //     child: InkWell(
+        //       onTap: () {
+        //         showSearch(
+        //           context: context,
+        //           delegate: CitySearchDelegate(),
+        //         );
+        //       },
+        //       child: Icon(Icons.search),
+        //     ),
+        //   )
+        // ],
       ),
       body: Center(child: Container(child: futureBuilder)),
       // body: Center(
@@ -145,8 +145,27 @@ class MapViewState extends State<MapView> {
     );
   }
 
+  Color getColor(aqi) {
+    var color = Colors.white;
+    if (double.parse(aqi.toString()) <= 50) {
+      color = Colors.green;
+    } else if (double.parse(aqi.toString()) > 50 || double.parse(aqi.toString()) <= 100) {
+      color = Colors.yellow[700];
+    } else if (double.parse(aqi.toString()) > 100 || double.parse(aqi.toString()) <= 150) {
+      color = Colors.deepOrange;
+    } else if (double.parse(aqi.toString()) > 150 || double.parse(aqi.toString()) <= 200) {
+      color = Colors.red;
+    } else if (double.parse(aqi.toString()) > 200 || double.parse(aqi.toString()) <= 300) {
+      color = Colors.purple;
+    } else if (double.parse(aqi.toString()) > 200 || double.parse(aqi.toString()) <= 300) {
+      color = Colors.purple[900];
+    }
+    return color;
+  }
+
   void createMarkers(data) {
-    var newMarker = Marker(
+    if(data != null){
+      var newMarker = Marker(
       width: 80.0,
       height: 80.0,
       point: LatLng(data[0], data[1]),
@@ -155,20 +174,22 @@ class MapViewState extends State<MapView> {
         children: <Widget>[
           Icon(
             Icons.location_on,
-            color: Colors.red,
+            color: getColor(data[data.length-1]),
             size: 50,
           ),
         ],
       )),
     );
     markerList.add(newMarker);
+    }
   }
 
   FlutterMap buildFlutterMap(AsyncSnapshot snapshot) {
     markerList = <Marker>[];
     var data = snapshot.data;
-    data.forEach((location) => createMarkers(location));
+    data != null ? data.forEach((location) => createMarkers(location)) : null;
     return FlutterMap(
+
       options: MapOptions(
         onTap: _handleOnTap,
         plugins: [
