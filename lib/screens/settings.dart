@@ -1,9 +1,12 @@
+import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hive/hive.dart';
+import 'package:humantiy/constants.dart';
+import 'package:humantiy/core/locator.dart';
+import 'package:humantiy/core/services/data_services.dart';
 import 'package:humantiy/core/services/location_services.dart';
-import 'package:humantiy/models/air_data_model.dart';
-import 'package:humantiy/theme/themeManager.dart';
+import 'package:humantiy/theme/app_state_notify.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -15,40 +18,116 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
-    alertDialog() {
+    void showLoadingDialog(BuildContext context) async {
+      return showDialog<void>(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return WillPopScope(
+                onWillPop: () async => false,
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                  child: SimpleDialog(
+                      backgroundColor: Colors.transparent,
+                      children: <Widget>[
+                        Center(
+                          child: Container(
+                            child: Column(children: [
+                              CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    Colors.indigoAccent),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                'Konum Güncelleniyor...',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ]),
+                          ),
+                        )
+                      ]),
+                ));
+          });
+    }
+
+    Future<bool> succesChangeLocation() async {
+      Navigator.pop(context);
       return Alert(
           type: AlertType.success,
           context: context,
-          title: "KONUM BAŞARIYLA DEĞİŞTİRİLDİ",
+          style: AlertStyle(
+            titleStyle: TextStyle(fontSize: 16),
+            descStyle: TextStyle(fontSize: 15),
+          ),
+          title: 'Konum Başarıyla Güncellendi!',
           desc:
-              "Konum değiştirme talebiniz başarıyla onaylandı.\nSağlıklı günler dileriz.",
+              'Konum güncelleme işleminiz başarıyla gerçekleşti.\nSağlıklı günler dileriz.',
           buttons: [
             DialogButton(
               child: Text(
-                "KAPAT",
-                style: TextStyle(color: Colors.white, fontSize: 24),
+                'Tamam',
+                style: TextStyle(color: Colors.white, fontSize: 16),
               ),
               onPressed: () => Navigator.pop(context),
             )
           ]).show();
     }
 
-    alertDialog2() {
+    Future<bool> failedChangeLocation() {
+      Navigator.pop(context);
       return Alert(
           type: AlertType.warning,
           context: context,
-          title: "KONUM DEĞİŞTİRİLEMEDİ",
+          style: AlertStyle(
+            titleStyle: TextStyle(fontSize: 16),
+            descStyle: TextStyle(fontSize: 15),
+          ),
+          title: 'Konum Değiştirilemedi!',
           desc:
-              "Teknik bir sorun yaşandığından dolayı işleminizi gerçekleştiremedik.\nSağlıklı günler dileriz.",
+              'Teknik bir sorun yaşandığından dolayı işleminizi gerçekleştiremedik.\nSağlıklı günler dileriz.',
           buttons: [
             DialogButton(
               child: Text(
-                "KAPAT",
-                style: TextStyle(color: Colors.white, fontSize: 24),
+                'Tamam',
+                style: TextStyle(color: Colors.white, fontSize: 16),
               ),
               onPressed: () => Navigator.pop(context),
             )
           ]).show();
+    }
+
+    void checkCurrentLocation() async {
+      showLoadingDialog(context);
+      await Hive.openBox('myLocationsDb');
+      var box = await Hive.box('myLocationsDb');
+      var locationServices = getIt<LocationServices>();
+      await locationServices.getPosition().then((position) async {
+        var coordinateLocationModel = getIt<DataServicesFromCoordinate>(
+          param1: position.latitude.toString(),
+          param2: position.longitude.toString(),
+        );
+        final airDataModel =
+            await coordinateLocationModel.getCityDataFromCoordinate();
+        List<dynamic> tempAreas = await box.get('savedAreas') ?? [];
+        tempAreas.isNotEmpty ? tempAreas.removeAt(0) : null;
+        tempAreas.insert(0, [
+          position.latitude,
+          position.longitude,
+          airDataModel.name,
+          airDataModel.aqi
+        ]);
+        await box.put('savedAreas', tempAreas);
+        await succesChangeLocation();
+      }).catchError((error) async {
+        await failedChangeLocation();
+      });
+      if (mounted) {
+        setState(() {
+          isGetCurrentLocation = true;
+        });
+      }
     }
 
     return Scaffold(
@@ -71,16 +150,17 @@ class _SettingsState extends State<Settings> {
                       ListTile(
                         leading: Icon(
                           Icons.location_on,
-                          color: Colors.purple,
+                          color: Colors.indigo,
                         ),
-                        title: Text('Change Location'),
+                        title: Text(
+                          'Konumu Güncelle',
+                          style: TextStyle(
+                              color:
+                                  Theme.of(context).textTheme.bodyText1.color),
+                        ),
                         trailing: Icon(Icons.keyboard_arrow_right),
                         onTap: () {
-                          LocationServices().getPosition().then((value) {
-                            alertDialog();
-                          }).catchError((e) {
-                            alertDialog2();
-                          });
+                          checkCurrentLocation();
                           //ardından bizim ana fonksiyona yollamamız gerekiyor sanırım.
                         },
                       ),
@@ -89,23 +169,29 @@ class _SettingsState extends State<Settings> {
                 ),
                 const SizedBox(height: 20.0),
                 Text(
-                  'Other Settings',
+                  'Diğer Ayarlar',
                   style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
-                    color: Colors.indigo,
+                    color: Theme.of(context).accentColor,
                   ),
                 ),
-                Consumer<ThemeNotifier>(
-                  builder: (context, notifier, child) => SwitchListTile(
-                    activeColor: Colors.purple,
-                    contentPadding: const EdgeInsets.all(0),
-                    title: Text('Dark Mode'),
-                    onChanged: (val) {
-                      notifier.toggleTheme();
-                    },
-                    value: notifier.darkTheme,
+                SwitchListTile(
+                  activeColor: Colors.indigoAccent,
+                  contentPadding: const EdgeInsets.all(0),
+                  title: Text(
+                    'Koyu Tema',
+                    style: TextStyle(
+                        color: Theme.of(context).textTheme.bodyText1.color),
                   ),
+                  onChanged: (isDarkModeEnabled) {
+                    setState(() {
+                      changeTheme(isDarkModeEnabled);
+                      Provider.of<AppStateNotifier>(context, listen: false)
+                          .updateTheme(isDarkModeEnabled);
+                    });
+                  },
+                  value: Provider.of<AppStateNotifier>(context).isDarkMode,
                 ),
                 const SizedBox(height: 60.0),
               ],
@@ -114,6 +200,12 @@ class _SettingsState extends State<Settings> {
         ],
       ),
     );
+  }
+
+  void changeTheme(bool theme) async {
+    await Hive.openBox('theme');
+    var box = await Hive.box('theme');
+    await box.put('darktheme', theme);
   }
 
   Container _buildDivider() {
