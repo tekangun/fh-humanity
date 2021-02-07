@@ -96,46 +96,5 @@ class Information extends StatelessWidget {
         ),
       ),
     );
-
-    /*Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0.0, 24.0, 0.0, 0.0),
-              child: Image.asset(
-                'assets/0_50.png',
-                height: 200.0,
-                width: itemWidth,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Text(
-                'Zararlı Maddeler',
-                style: TextStyle(
-                    fontSize: 28.0,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: SingleChildScrollView(
-                child: Text('PM10-PM-2.5: '
-                    'Toz, polen, küf gibi 10 mikron ve daha küçük parçacıklar PM10 (partiküler madde) olarak ve yanma sonucu oluşan parçacıkları, organik bileşikler gibi 2,5 mikron ve daha küçük parçacıklar ise PM2.5 olarak adlandırılır.'
-                    'Zararları: '
-                    'Akciğerler tarafından en derin noktalara kadar solunabilecek olan küçük partiküller PM10 ve PM2.5 olarak adlandırılırlar. Bunlardan daha iri olan partiküller ise üst solunum yollarında filtre edileceklerdir. PM2.5 bunların en tehlikelisi olup, bronkiollerin çevresel bölgelerinin en derin noktalarına kadar solunabilmekte ve akciğerler içersinde gaz değişimine etki edebilmektedirler.'
-                    'Kalp ve damar hastalıkları özellikle de koroner kalp hastalığı tüm dünyada önde gelen ölüm nedenlerindendir. Kalp ve damar hastalıklarının en önemli 3 temel nedeni, yüksek kolesterol, yüksek tansiyon ve sigara kullanımıdır. Bu nedenle kolesterol ve hipertansiyonu normal seviyelerde tutmak amacıyla doktorlar tarafından sağlıklı beslenme, hareketli bir yaşam tarzı ve sigaradan uzak durulması önerilir. Bununla birlikte son dönemde yapılan tıbbi çalışmalar kalp ve damar hastalıklarının hava kirliliği, özellikle de ince partikül (PM2.5) kirliliği ile ilişkili olduğunu göstermiştir.'
-                    'CO: '
-                    'Karbonmonoksit (CO) renksiz, kokusuz ve tatsızdır. Gaz, yağ, tahta ve kömür içeren karbon bazlı yakıtların eksik yanmasıyla meydana gelen zehirli bir gazdır. Fazla CO nun meydana geldiği yakıt düzgün bir biçimde yanmadığında tehlikeli olmaktadır.'
-                    'Zararları: '
-                    'Baş ağırısı, Kusma, Nefes nefese kalma, Düşme, Baş dönmesi ve Bayılma'),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );*/
   }
 }

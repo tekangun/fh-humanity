@@ -52,7 +52,7 @@ class _SettingsState extends State<Settings> {
           });
     }
 
-    Future<bool> succesChangeLocation() async {
+    Future<bool> succesChange() async {
       Navigator.pop(context);
       return Alert(
           type: AlertType.success,
@@ -61,9 +61,8 @@ class _SettingsState extends State<Settings> {
             titleStyle: TextStyle(fontSize: 16),
             descStyle: TextStyle(fontSize: 15),
           ),
-          title: 'Konum Başarıyla Güncellendi!',
-          desc:
-              'Konum güncelleme işleminiz başarıyla gerçekleşti.\nSağlıklı günler dileriz.',
+          title: 'Işlem onaylandı!',
+          desc: 'Işleminiz başarıyla gerçekleşti.\nSağlıklı günler dileriz.',
           buttons: [
             DialogButton(
               child: Text(
@@ -75,7 +74,7 @@ class _SettingsState extends State<Settings> {
           ]).show();
     }
 
-    Future<bool> failedChangeLocation() {
+    Future<bool> failedChange() {
       Navigator.pop(context);
       return Alert(
           type: AlertType.warning,
@@ -84,7 +83,7 @@ class _SettingsState extends State<Settings> {
             titleStyle: TextStyle(fontSize: 16),
             descStyle: TextStyle(fontSize: 15),
           ),
-          title: 'Konum Değiştirilemedi!',
+          title: 'İşlem onaylanmadı!',
           desc:
               'Teknik bir sorun yaşandığından dolayı işleminizi gerçekleştiremedik.\nSağlıklı günler dileriz.',
           buttons: [
@@ -119,9 +118,9 @@ class _SettingsState extends State<Settings> {
           airDataModel.aqi
         ]);
         await box.put('savedAreas', tempAreas);
-        await succesChangeLocation();
+        await succesChange();
       }).catchError((error) async {
-        await failedChangeLocation();
+        await failedChange();
       });
       if (mounted) {
         setState(() {
@@ -164,6 +163,25 @@ class _SettingsState extends State<Settings> {
                           //ardından bizim ana fonksiyona yollamamız gerekiyor sanırım.
                         },
                       ),
+                      ListTile(
+                          leading: Icon(
+                            Icons.clear,
+                            color: Colors.indigo,
+                          ),
+                          title: Text(
+                            'Verileri Temizle',
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    .color),
+                          ),
+                          trailing: Icon(Icons.keyboard_arrow_right),
+                          onTap: () {
+                            //verileri temizlemek için
+                            //alert kısımlarını failed ve succes olarak güncellendi ayrı bir tane mesaj yerıne
+                            //olumlu olumsuz alert cıkartılması daha mantıklı
+                          }),
                     ],
                   ),
                 ),
@@ -207,5 +225,4 @@ class _SettingsState extends State<Settings> {
     var box = await Hive.box('theme');
     await box.put('darktheme', theme);
   }
-
 }
