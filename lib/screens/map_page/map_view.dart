@@ -5,8 +5,6 @@ import 'package:hive/hive.dart';
 import 'package:humantiy/constants.dart';
 import 'package:humantiy/core/services/data_services.dart';
 import 'package:humantiy/models/air_data_model.dart';
-import 'package:humantiy/screens/info_view.dart';
-// import 'package:humantiy/screens/map_page/city_search_delegate.dart';
 import 'package:latlong/latlong.dart';
 
 import '../../core/locator.dart';
@@ -92,11 +90,7 @@ class MapViewState extends State<MapView> {
     return selectedAreaData;
   }
 
-  void routeInfo(context, data) {
-    final route = MaterialPageRoute(
-        builder: (BuildContext context) => DataInfoView(data: data));
-    Navigator.of(context).push(route);
-  }
+
 
   @override
   Widget build(BuildContext context) {
