@@ -56,7 +56,7 @@ class MapViewState extends State<MapView> {
   List<dynamic> compileAreaDataForSave(AirDataModel airDataModel) {
     var tempSavedAreas = [];
     tempSavedAreas
-        .insert(0, [airDataModel.lat, airDataModel.lng, airDataModel.name, airDataModel.aqi]);
+        .insert(0, [airDataModel.lat, airDataModel.lng, airDataModel.name,airDataModel.aqi]);
     return tempSavedAreas;
   }
 
@@ -164,7 +164,8 @@ class MapViewState extends State<MapView> {
   }
 
   void createMarkers(data) {
-    var newMarker = Marker(
+    if(data != null){
+      var newMarker = Marker(
       width: 80.0,
       height: 80.0,
       point: LatLng(data[0], data[1]),
@@ -180,13 +181,15 @@ class MapViewState extends State<MapView> {
       )),
     );
     markerList.add(newMarker);
+    }
   }
 
   FlutterMap buildFlutterMap(AsyncSnapshot snapshot) {
     markerList = <Marker>[];
     var data = snapshot.data;
-    data.forEach((location) => createMarkers(location));
+    data != null ? data.forEach((location) => createMarkers(location)) : null;
     return FlutterMap(
+      
       options: MapOptions(
         onTap: _handleOnTap,
         plugins: [

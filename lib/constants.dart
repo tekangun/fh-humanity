@@ -2,8 +2,16 @@ String appName = 'Humanity';
 bool isSavedNewArea = false;
 bool isGetCurrentLocation = false;
 String airToken = 'f40a3a67533bd1327dc9a070eafda09fe3678b91';
+List<String> localImagePath = [
+  'assets/images/0_50.png',
+  'assets/images/51_100.png',
+  'assets/images/101_150.png',
+  'assets/images/151_200.png',
+  'assets/images/201_300.png',
+  'assets/images/300_plus.png',
+];
 List<String> citys = [
-    'Adana',
+  'Adana',
   'Adıyaman',
   'Afyon',
   'Ağrı',
