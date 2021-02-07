@@ -5,7 +5,6 @@ import 'package:humantiy/core/locator.dart';
 import 'package:humantiy/screens/nav_bar/bottom_nav_bar.dart';
 import 'package:humantiy/theme/themeManager.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   setUpLocators();
@@ -21,8 +20,11 @@ class MyApp extends StatelessWidget {
         child: Consumer<ThemeNotifier>(
           builder: (context, ThemeNotifier notifier, child) {
             return MaterialApp(
-              title: 'Flutter Theme Provider',
-              theme: notifier.darkTheme ? dark : light,
+              theme: notifier.darkTheme == null
+                  ? light
+                  : notifier.darkTheme
+                      ? dark
+                      : light,
               home: BottomNavBarPage(),
             );
           },

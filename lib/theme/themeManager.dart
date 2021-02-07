@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive/hive.dart';
 
 ThemeData light = ThemeData(
     brightness: Brightness.light,
@@ -15,34 +15,43 @@ ThemeData dark = ThemeData(
 
 class ThemeNotifier extends ChangeNotifier {
   final String key = 'theme';
-  SharedPreferences _prefs;
   bool _darkTheme;
 
   bool get darkTheme => _darkTheme;
-
   ThemeNotifier() {
-    _darkTheme = true;
-    _loadFromPrefs();
+    controllerFons();
+  }
+
+  trueTheme() async {
+    await Hive.openBox('theme');
+    var box = Hive.box('theme');
+    await box.put('_darktheme', true);
+    _darkTheme = await box.get('_darktheme');
+    notifyListeners();
+  }
+
+  getValue() async {
+    await Hive.openBox('theme');
+    var box = Hive.box('theme');
+    _darkTheme = await box.get('_darktheme');
+  }
+
+  falseTheme() async {
+    await Hive.openBox('theme');
+    var box = Hive.box('theme');
+    await box.put('_darktheme', false);
+    _darkTheme = await box.get('_darktheme');
+    notifyListeners();
+  }
+
+  controllerFons() {
+    if (_darkTheme == null) {
+      falseTheme();
+    }
   }
 
   toggleTheme() {
-    _darkTheme = !_darkTheme;
-    _saveToPrefs();
-    notifyListeners();
-  }
-
-  _initPrefs() async {
-    if (_prefs == null) _prefs = await SharedPreferences.getInstance();
-  }
-
-  _loadFromPrefs() async {
-    await _initPrefs();
-    _darkTheme = _prefs.getBool(key) ?? true;
-    notifyListeners();
-  }
-
-  _saveToPrefs() async {
-    await _initPrefs();
-    _prefs.setBool(key, _darkTheme);
+    controllerFons();
+    _darkTheme ? falseTheme() : trueTheme();
   }
 }

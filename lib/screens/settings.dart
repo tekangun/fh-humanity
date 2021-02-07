@@ -5,6 +5,7 @@ import 'package:humantiy/core/services/location_services.dart';
 import 'package:humantiy/models/air_data_model.dart';
 import 'package:humantiy/theme/themeManager.dart';
 import 'package:provider/provider.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -15,25 +16,39 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     alertDialog() {
-      return AlertDialog(
-        title: Text('AlertDialog Title'),
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text('This is a demo alert dialog.'),
-              Text('Would you like to approve of this message?'),
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: Text('Approve'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
+      return Alert(
+          type: AlertType.success,
+          context: context,
+          title: "KONUM BAŞARIYLA DEĞİŞTİRİLDİ",
+          desc:
+              "Konum değiştirme talebiniz başarıyla onaylandı.\nSağlıklı günler dileriz.",
+          buttons: [
+            DialogButton(
+              child: Text(
+                "KAPAT",
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+              onPressed: () => Navigator.pop(context),
+            )
+          ]).show();
+    }
+
+    alertDialog2() {
+      return Alert(
+          type: AlertType.warning,
+          context: context,
+          title: "KONUM DEĞİŞTİRİLEMEDİ",
+          desc:
+              "Teknik bir sorun yaşandığından dolayı işleminizi gerçekleştiremedik.\nSağlıklı günler dileriz.",
+          buttons: [
+            DialogButton(
+              child: Text(
+                "KAPAT",
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+              onPressed: () => Navigator.pop(context),
+            )
+          ]).show();
     }
 
     return Scaffold(
@@ -63,7 +78,8 @@ class _SettingsState extends State<Settings> {
                         onTap: () {
                           LocationServices().getPosition().then((value) {
                             alertDialog();
-                            print(value);
+                          }).catchError((e) {
+                            alertDialog2();
                           });
                           //ardından bizim ana fonksiyona yollamamız gerekiyor sanırım.
                         },
@@ -91,57 +107,10 @@ class _SettingsState extends State<Settings> {
                     value: notifier.darkTheme,
                   ),
                 ),
-                /*SwitchListTile(
-                  activeColor: Colors.purple,
-                  contentPadding: const EdgeInsets.all(0),
-                  value: false,
-                  title: Text('Received newsletter'),
-                  onChanged: null,
-                ),
-                SwitchListTile(
-                  activeColor: Colors.purple,
-                  contentPadding: const EdgeInsets.all(0),
-                  value: true,
-                  title: Text('Received Offer Notification'),
-                  onChanged: (val) {},
-                ),
-                SwitchListTile(
-                  activeColor: Colors.purple,
-                  contentPadding: const EdgeInsets.all(0),
-                  value: true,
-                  title: Text('Received App Updates'),
-                  onChanged: null,
-                ),*/
                 const SizedBox(height: 60.0),
               ],
             ),
           ),
-          /*Positioned(
-            bottom: -20,
-            left: -20,
-            child: Container(
-              width: 80,
-              height: 80,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.purple,
-                shape: BoxShape.circle,
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 00,
-            left: 00,
-            child: IconButton(
-              icon: Icon(
-                FontAwesomeIcons.powerOff,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                //log out
-              },
-            ),
-          )*/
         ],
       ),
     );
