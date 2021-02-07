@@ -18,7 +18,7 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
-    void showLoadingDialog(BuildContext context) async {
+    void showLoadingDialog(BuildContext context, String _title) async {
       return showDialog<void>(
           context: context,
           barrierDismissible: false,
@@ -41,7 +41,7 @@ class _SettingsState extends State<Settings> {
                                 height: 10,
                               ),
                               Text(
-                                'Konum Güncelleniyor...',
+                                _title,
                                 style: TextStyle(color: Colors.white),
                               ),
                             ]),
@@ -52,7 +52,7 @@ class _SettingsState extends State<Settings> {
           });
     }
 
-    Future<bool> succesChange() async {
+    Future<bool> succesChange(String _title, String _desc) async {
       Navigator.pop(context);
       return Alert(
           type: AlertType.success,
@@ -61,8 +61,8 @@ class _SettingsState extends State<Settings> {
             titleStyle: TextStyle(fontSize: 16),
             descStyle: TextStyle(fontSize: 15),
           ),
-          title: 'Işlem onaylandı!',
-          desc: 'Işleminiz başarıyla gerçekleşti.\nSağlıklı günler dileriz.',
+          title: _title,
+          desc: _desc,
           buttons: [
             DialogButton(
               child: Text(
@@ -74,7 +74,7 @@ class _SettingsState extends State<Settings> {
           ]).show();
     }
 
-    Future<bool> failedChange() {
+    Future<bool> failedChange(String _title, String _desc) {
       Navigator.pop(context);
       return Alert(
           type: AlertType.warning,
@@ -83,9 +83,8 @@ class _SettingsState extends State<Settings> {
             titleStyle: TextStyle(fontSize: 16),
             descStyle: TextStyle(fontSize: 15),
           ),
-          title: 'İşlem onaylanmadı!',
-          desc:
-              'Teknik bir sorun yaşandığından dolayı işleminizi gerçekleştiremedik.\nSağlıklı günler dileriz.',
+          title: _title,
+          desc: _desc,
           buttons: [
             DialogButton(
               child: Text(
@@ -98,7 +97,7 @@ class _SettingsState extends State<Settings> {
     }
 
     void checkCurrentLocation() async {
-      showLoadingDialog(context);
+      showLoadingDialog(context, 'Konum Güncelleniyor...');
       await Hive.openBox('myLocationsDb');
       var box = await Hive.box('myLocationsDb');
       var locationServices = getIt<LocationServices>();
@@ -118,9 +117,11 @@ class _SettingsState extends State<Settings> {
           airDataModel.aqi
         ]);
         await box.put('savedAreas', tempAreas);
-        await succesChange();
+        await succesChange('Konum Başarıyla Güncellendi',
+            'Yeni konumunuza ait verileri ana sayfa üzerinden görüntüleyebilirsiniz.');
       }).catchError((error) async {
-        await failedChange();
+        await failedChange('Konum Güncellenemedi',
+            'Konumunuzu güncelleyemedik. Lütfen daha sonra tekrar deneyiniz.');
       });
       if (mounted) {
         setState(() {
@@ -128,6 +129,7 @@ class _SettingsState extends State<Settings> {
         });
       }
     }
+
 
     return Scaffold(
       body: Stack(
@@ -163,25 +165,6 @@ class _SettingsState extends State<Settings> {
                           //ardından bizim ana fonksiyona yollamamız gerekiyor sanırım.
                         },
                       ),
-                      ListTile(
-                          leading: Icon(
-                            Icons.clear,
-                            color: Colors.indigo,
-                          ),
-                          title: Text(
-                            'Verileri Temizle',
-                            style: TextStyle(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1
-                                    .color),
-                          ),
-                          trailing: Icon(Icons.keyboard_arrow_right),
-                          onTap: () {
-                            //verileri temizlemek için
-                            //alert kısımlarını failed ve succes olarak güncellendi ayrı bir tane mesaj yerıne
-                            //olumlu olumsuz alert cıkartılması daha mantıklı
-                          }),
                     ],
                   ),
                 ),

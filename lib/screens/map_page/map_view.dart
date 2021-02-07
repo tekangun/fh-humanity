@@ -41,7 +41,6 @@ class MapViewState extends State<MapView> {
     var newSaveArea = compileAreaDataForSave(await data);
     savedAreas != null ? savedAreas.add(newSaveArea[0]) : null;
     var lastSavedData = savedAreas ?? newSaveArea;
-    print(lastSavedData);
     await box.put('savedAreas', lastSavedData);
     if (mounted) {
       setState(() {
@@ -112,47 +111,26 @@ class MapViewState extends State<MapView> {
               }
           }
         });
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('humanity'),
-        // actions: [
-        //   Container(
-        //     padding: EdgeInsets.only(right: 10),
-        //     child: InkWell(
-        //       onTap: () {
-        //         showSearch(
-        //           context: context,
-        //           delegate: CitySearchDelegate(),
-        //         );
-        //       },
-        //       child: Icon(Icons.search),
-        //     ),
-        //   )
-        // ],
-      ),
-      body: Center(child: Container(child: futureBuilder)),
-      // body: Center(
-      //   child: Container(
-      //     child: buildFlutterMap(),
-      //   ),
-      // ),
-    );
+    return Center(child: Container(child: futureBuilder));
   }
 
   Color getColor(aqi) {
     var color = Colors.white;
-    if (double.parse(aqi.toString()) <= 50) {
+
+    if(aqi <= 50){
       color = Colors.green;
-    } else if (double.parse(aqi.toString()) > 50 || double.parse(aqi.toString()) <= 100) {
+    }
+    else if(aqi <= 100){
       color = Colors.yellow[700];
-    } else if (double.parse(aqi.toString()) > 100 || double.parse(aqi.toString()) <= 150) {
+    }
+     else if(aqi <= 150){
       color = Colors.deepOrange;
-    } else if (double.parse(aqi.toString()) > 150 || double.parse(aqi.toString()) <= 200) {
+    }
+      else if(aqi <= 200){
       color = Colors.red;
-    } else if (double.parse(aqi.toString()) > 200 || double.parse(aqi.toString()) <= 300) {
+    }
+       else if(aqi <= 300){
       color = Colors.purple;
-    } else if (double.parse(aqi.toString()) > 200 || double.parse(aqi.toString()) <= 300) {
-      color = Colors.purple[900];
     }
     return color;
   }

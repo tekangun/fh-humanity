@@ -54,7 +54,6 @@ class ThemeNotifier extends ChangeNotifier {
 
   void toggleTheme(bool isDarkMode) {
     controllerFons();
-    print(isDarkMode);
     isDarkMode ? trueTheme() : falseTheme();
   }
 }

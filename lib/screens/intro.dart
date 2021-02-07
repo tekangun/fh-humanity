@@ -52,7 +52,7 @@ class _IntroScreenState extends State<IntroScreen> {
             fontSize: 20.0,
             fontStyle: FontStyle.italic,
             fontFamily: 'Raleway'),
-        pathImage: 'assets/images/51_100.png',
+            pathImage: 'assets/images/51_100.png',
       ),
     );
     slides.add(

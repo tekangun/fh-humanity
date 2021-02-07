@@ -23,7 +23,7 @@ class TabNavigatorState extends State<TabNavigator> {
     if (widget.tabItem == 'Ana Sayfa') {
       child = Scaffold(
           appBar: AppBar(
-            title: Text('humanity'),
+            title: Text('Humantiy'),
             actions: [
               IconButton(
                 icon: Icon(
@@ -45,11 +45,15 @@ class TabNavigatorState extends State<TabNavigator> {
           ),
           body: Home());
     } else if (widget.tabItem == 'Harita') {
-      child = MapView();
+      child =Scaffold(
+          appBar: AppBar(
+            title: Text('Humantiy'),
+          ),
+          body: MapView());
     } else if (widget.tabItem == 'Ayarlar') {
       child = Scaffold(
           appBar: AppBar(
-            title: Text('humanity'),
+            title: Text('Humantiy'),
           ),
           body: Settings());
     }

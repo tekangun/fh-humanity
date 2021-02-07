@@ -5,7 +5,7 @@ class Information extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Information'),
+        title: Text('Bilgilendirme'),
         centerTitle: true,
       ),
       body: SafeArea(

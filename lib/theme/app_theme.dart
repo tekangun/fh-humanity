@@ -5,6 +5,9 @@ class AppTheme {
   AppTheme._();
 
   static final lightTheme = ThemeData(
+    appBarTheme: AppBarTheme(
+      centerTitle: true,
+    ),
       brightness: Brightness.light,
       primarySwatch: Colors.indigo,
       accentColor: Colors.indigo,

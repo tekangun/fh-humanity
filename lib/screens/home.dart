@@ -331,7 +331,7 @@ class HomeState extends State<Home> {
     showDialog(
         context: context,
         builder: (context) {
-          return CupertinoAlertDialog(
+          return AlertDialog(
             title: Text(
                 '$locationName adlı bölgeyi listenizden kaldırmak istediğinize emin misiniz?'),
             actions: [
