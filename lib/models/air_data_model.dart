@@ -6,6 +6,7 @@ class AirDataModel {
   var lat;
   var lng;
   var time;
+  var aqi;
 
   AirDataModel({
     this.co,
@@ -15,6 +16,7 @@ class AirDataModel {
     this.lat,
     this.lng,
     this.time,
+    this.aqi
   });
 
   factory AirDataModel.fromSnapshots({Map<String, dynamic> airDataMap}) {
@@ -32,6 +34,7 @@ class AirDataModel {
        lat: airDataMap['data']['city']['geo'][0],
        lng: airDataMap['data']['city']['geo'][1],
        time: airDataMap['data']['time']['s'],
+       aqi: airDataMap['data']['aqi'],
     );
   }
 }

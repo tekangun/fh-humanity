@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:humantiy/constants.dart';
+import 'package:humantiy/models/air_data_model.dart';
 
 class DataInfoView extends StatefulWidget {
   final Future data;
+
   DataInfoView({
     Key key,
     this.data,
@@ -12,10 +16,38 @@ class DataInfoView extends StatefulWidget {
 }
 
 class _DataInfoViewState extends State<DataInfoView> {
-  void _onButtonPressed() {
-    // kaydet fonksiyonu
-    // liste şeklinde kaydedilen noktalar oluşturulur
-    print('kaydet fonksiyonu');
+  var box = Hive.box('myLocationsDb');
+
+  List<dynamic> compileAreaDataForSave(AirDataModel airDataModel) {
+    var tempSavedAreas = [];
+    tempSavedAreas
+        .insert(0, [airDataModel.lat, airDataModel.lng, airDataModel.name]);
+    return tempSavedAreas;
+  }
+
+  void _saveAreaToLocal() async {
+    var savedAreas = await box.get('savedAreas');
+    var newSaveArea = compileAreaDataForSave(await widget.data);
+    savedAreas != null ? savedAreas.add(newSaveArea[0]) : null;
+    var lastSavedData = savedAreas ?? newSaveArea;
+    print(lastSavedData);
+    await box.put('savedAreas', lastSavedData);
+   if(mounted){
+     setState(() {
+       isSavedNewArea = true;
+     });
+   }
+   Navigator.pop(context);
+  }
+
+  void _loadDefaults() async {
+    await Hive.openBox('myLocationsDb');
+  }
+
+  @override
+  void initState() {
+    _loadDefaults();
+    super.initState();
   }
 
   @override
@@ -57,7 +89,7 @@ class _DataInfoViewState extends State<DataInfoView> {
                   color: Colors.black87,
                   size: 20,
                 ),
-                onPressed: () => _onButtonPressed(),
+                onPressed: () => _saveAreaToLocal(),
               ),
             ],
           ),

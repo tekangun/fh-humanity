@@ -17,16 +17,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => ThemeNotifier(),
-      child: Consumer<ThemeNotifier>(
-        builder: (context, ThemeNotifier notifier, child) {
-          return MaterialApp(
-            title: 'Flutter Theme Provider',
-            theme: notifier.darkTheme ? dark : light,
-            home: BottomNavBarPage(),
-          );
-        },
-      ),
-    );
+        create: (_) => ThemeNotifier(),
+        child: Consumer<ThemeNotifier>(
+          builder: (context, ThemeNotifier notifier, child) {
+            return MaterialApp(
+              title: 'Flutter Theme Provider',
+              theme: notifier.darkTheme ? dark : light,
+              home: BottomNavBarPage(),
+            );
+          },
+        ));
   }
 }
