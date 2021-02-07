@@ -31,9 +31,7 @@ class BarajMainState extends State<BarajMain> {
 
   void routeInfo(context, data) {
     final route = MaterialPageRoute(
-        builder: (BuildContext context) => DataInfoView(
-              data: data
-            ));
+        builder: (BuildContext context) => DataInfoView(data: data));
     Navigator.of(context).push(route);
   }
 

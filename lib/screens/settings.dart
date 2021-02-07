@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:humantiy/core/services/location_services.dart';
+import 'package:humantiy/models/air_data_model.dart';
+import 'package:humantiy/theme/themeManager.dart';
+import 'package:provider/provider.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -10,6 +14,28 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
+    alertDialog() {
+      return AlertDialog(
+        title: Text('AlertDialog Title'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text('This is a demo alert dialog.'),
+              Text('Would you like to approve of this message?'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Approve'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    }
+
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -29,37 +55,17 @@ class _SettingsState extends State<Settings> {
                     children: <Widget>[
                       ListTile(
                         leading: Icon(
-                          Icons.lock_outline,
-                          color: Colors.purple,
-                        ),
-                        title: Text("Change Password"),
-                        trailing: Icon(Icons.keyboard_arrow_right),
-                        onTap: () {
-                          //open change password
-                        },
-                      ),
-                      _buildDivider(),
-                      ListTile(
-                        leading: Icon(
-                          FontAwesomeIcons.language,
-                          color: Colors.purple,
-                        ),
-                        title: Text("Change Language"),
-                        trailing: Icon(Icons.keyboard_arrow_right),
-                        onTap: () {
-                          //open change language
-                        },
-                      ),
-                      _buildDivider(),
-                      ListTile(
-                        leading: Icon(
                           Icons.location_on,
                           color: Colors.purple,
                         ),
-                        title: Text("Change Location"),
+                        title: Text('Change Location'),
                         trailing: Icon(Icons.keyboard_arrow_right),
                         onTap: () {
-                          //open change location
+                          LocationServices().getPosition().then((value) {
+                            alertDialog();
+                            print(value);
+                          });
+                          //ardından bizim ana fonksiyona yollamamız gerekiyor sanırım.
                         },
                       ),
                     ],
@@ -67,46 +73,50 @@ class _SettingsState extends State<Settings> {
                 ),
                 const SizedBox(height: 20.0),
                 Text(
-                  "Notification Settings",
+                  'Other Settings',
                   style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
                     color: Colors.indigo,
                   ),
                 ),
-                SwitchListTile(
-                  activeColor: Colors.purple,
-                  contentPadding: const EdgeInsets.all(0),
-                  value: true,
-                  title: Text("Received notification"),
-                  onChanged: (val) {},
+                Consumer<ThemeNotifier>(
+                  builder: (context, notifier, child) => SwitchListTile(
+                    activeColor: Colors.purple,
+                    contentPadding: const EdgeInsets.all(0),
+                    title: Text('Dark Mode'),
+                    onChanged: (val) {
+                      notifier.toggleTheme();
+                    },
+                    value: notifier.darkTheme,
+                  ),
                 ),
-                SwitchListTile(
+                /*SwitchListTile(
                   activeColor: Colors.purple,
                   contentPadding: const EdgeInsets.all(0),
                   value: false,
-                  title: Text("Received newsletter"),
+                  title: Text('Received newsletter'),
                   onChanged: null,
                 ),
                 SwitchListTile(
                   activeColor: Colors.purple,
                   contentPadding: const EdgeInsets.all(0),
                   value: true,
-                  title: Text("Received Offer Notification"),
+                  title: Text('Received Offer Notification'),
                   onChanged: (val) {},
                 ),
                 SwitchListTile(
                   activeColor: Colors.purple,
                   contentPadding: const EdgeInsets.all(0),
                   value: true,
-                  title: Text("Received App Updates"),
+                  title: Text('Received App Updates'),
                   onChanged: null,
-                ),
+                ),*/
                 const SizedBox(height: 60.0),
               ],
             ),
           ),
-          Positioned(
+          /*Positioned(
             bottom: -20,
             left: -20,
             child: Container(
@@ -131,7 +141,7 @@ class _SettingsState extends State<Settings> {
                 //log out
               },
             ),
-          )
+          )*/
         ],
       ),
     );
