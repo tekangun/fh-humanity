@@ -26,7 +26,7 @@ class HomeState extends State<Home> {
   final List<String> locationDataTitles = [
     'Hava Kalitesi:',
     'Karbonmonoksit:',
-    'Pm25:',
+    'Pm2.5:',
     'Pm10:',
     'Son Güncellenme Tarihi:'
   ];
