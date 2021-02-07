@@ -6,7 +6,7 @@ import 'package:humantiy/constants.dart';
 import 'package:humantiy/core/services/data_services.dart';
 import 'package:humantiy/models/air_data_model.dart';
 import 'package:humantiy/screens/info_view.dart';
-import 'package:humantiy/screens/map_page/city_search_delegate.dart';
+// import 'package:humantiy/screens/map_page/city_search_delegate.dart';
 import 'package:latlong/latlong.dart';
 
 import '../../core/locator.dart';
@@ -121,20 +121,20 @@ class MapViewState extends State<MapView> {
     return Scaffold(
       appBar: AppBar(
         title: Text('humanity'),
-        actions: [
-          Container(
-            padding: EdgeInsets.only(right: 10),
-            child: InkWell(
-              onTap: () {
-                showSearch(
-                  context: context,
-                  delegate: CitySearchDelegate(),
-                );
-              },
-              child: Icon(Icons.search),
-            ),
-          )
-        ],
+        // actions: [
+        //   Container(
+        //     padding: EdgeInsets.only(right: 10),
+        //     child: InkWell(
+        //       onTap: () {
+        //         showSearch(
+        //           context: context,
+        //           delegate: CitySearchDelegate(),
+        //         );
+        //       },
+        //       child: Icon(Icons.search),
+        //     ),
+        //   )
+        // ],
       ),
       body: Center(child: Container(child: futureBuilder)),
       // body: Center(
@@ -189,7 +189,7 @@ class MapViewState extends State<MapView> {
     var data = snapshot.data;
     data != null ? data.forEach((location) => createMarkers(location)) : null;
     return FlutterMap(
-      
+
       options: MapOptions(
         onTap: _handleOnTap,
         plugins: [
