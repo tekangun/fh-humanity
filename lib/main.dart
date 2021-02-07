@@ -6,12 +6,11 @@ import 'package:humantiy/screens/nav_bar/bottom_nav_bar.dart';
 
 Future<void> main()async {
   setUpLocators();
-  await Hive.initFlutter(); // Flutter uygulamaları için
+  await Hive.initFlutter();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

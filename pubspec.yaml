@@ -38,6 +38,10 @@ dependencies:
   geojson: ^0.9.1
   geopoint: ^0.7.1
   font_awesome_flutter: ^8.11.0
+  carousel_slider: ^3.0.0
+  shimmer: ^1.1.2
+  shared_preferences: ^0.5.12+4
+  provider: ^4.3.3
 
 dev_dependencies:
   flutter_test:
