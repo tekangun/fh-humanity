@@ -4,7 +4,9 @@ humantiy
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Bu proje flutter ile yazılmıştır.
+
+Humantiy ster anlık konumuz isterseniz dünyanın herhangi bir yerindeki noktanın eğer verileri varsa konum bazlı olarak hava kalitesi bilgilerini görebileceğiniz bir mobil uygulamadır. Kısa zamanlı veri güncellemeleri sayesinde istediğiniz bölge hakkındaki hava kalitesi bilgilerini görebilirsiniz.
 
 A few resources to get you started if this is your first Flutter project:
 
