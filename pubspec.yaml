@@ -42,6 +42,7 @@ dependencies:
   shimmer: ^1.1.2
   rflutter_alert: ^1.1.0
   provider: ^4.3.3
+  intro_slider: ^2.3.3
 
 dev_dependencies:
   flutter_test:
