@@ -4,54 +4,57 @@ import 'package:hive/hive.dart';
 ThemeData light = ThemeData(
     brightness: Brightness.light,
     primarySwatch: Colors.indigo,
-    accentColor: Colors.pink,
+    accentColor: Colors.indigo,
     scaffoldBackgroundColor: Color(0xfff1f1f1));
 
 ThemeData dark = ThemeData(
   brightness: Brightness.dark,
   primarySwatch: Colors.indigo,
-  accentColor: Colors.pink,
+  accentColor: Colors.indigo,
 );
 
 class ThemeNotifier extends ChangeNotifier {
   final String key = 'theme';
   bool _darkTheme;
 
+
   bool get darkTheme => _darkTheme;
   ThemeNotifier() {
     controllerFons();
   }
 
-  trueTheme() async {
+  void trueTheme() async {
     await Hive.openBox('theme');
     var box = Hive.box('theme');
-    await box.put('_darktheme', true);
-    _darkTheme = await box.get('_darktheme');
+    await box.put('darktheme', true);
+    _darkTheme = true;
     notifyListeners();
   }
 
-  getValue() async {
+  void getValue() async {
     await Hive.openBox('theme');
     var box = Hive.box('theme');
-    _darkTheme = await box.get('_darktheme');
+    _darkTheme = await box.get('darktheme');
   }
 
-  falseTheme() async {
+  void falseTheme() async {
     await Hive.openBox('theme');
-    var box = Hive.box('theme');
-    await box.put('_darktheme', false);
-    _darkTheme = await box.get('_darktheme');
+    var box = await Hive.box('theme');
+    await box.put('darktheme', false);
+    _darkTheme = false;
     notifyListeners();
   }
 
-  controllerFons() {
-    if (_darkTheme == null) {
-      falseTheme();
-    }
+  void controllerFons() async{
+    await Hive.openBox('theme');
+    var box = await Hive.box('theme');
+    _darkTheme = await box.get('darktheme');
+    notifyListeners();
   }
 
-  toggleTheme() {
+  void toggleTheme(bool isDarkMode) {
     controllerFons();
-    _darkTheme ? falseTheme() : trueTheme();
+    print(isDarkMode);
+    isDarkMode ? trueTheme() : falseTheme();
   }
 }
