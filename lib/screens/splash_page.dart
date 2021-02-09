@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:humantiy/screens/intro.dart';
 import 'package:humantiy/screens/nav_bar/bottom_nav_bar.dart';
+import 'package:humantiy/widgets/customLottieWidget.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -16,7 +17,7 @@ class SplashPageState extends State<SplashPage> {
     await Hive.openBox('loginState');
     var box = await Hive.box('loginState');
     var status = await box.get('loginStatus');
-    Timer(Duration(seconds: 3), () {
+    Timer(Duration(seconds: 4), () {
       if (status == 1) {
         Navigator.pushAndRemoveUntil(
             context,
@@ -52,11 +53,13 @@ class SplashPageState extends State<SplashPage> {
                 decoration: BoxDecoration(shape: BoxShape.circle),
                 child: Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: CircleAvatar(
-                      radius: 80,
-                      backgroundColor: Colors.white,
-                      backgroundImage: AssetImage('assets/images/0_50.png'),
-                    )),
+                    child: CustomLottieWidget(path: 'air-pollution',)
+                    // CircleAvatar(
+                    //   radius: 80,
+                    //   backgroundColor: Colors.white,
+                    //   backgroundImage: AssetImage('assets/images/0_50.png'),
+                    // )
+                    ),
               ),
             ],
           ),

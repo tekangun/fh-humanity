@@ -43,6 +43,7 @@ dependencies:
   provider: ^4.3.3
   intro_slider: ^2.3.3
   location: ^3.2.4
+  lottie: ^0.7.0+1
 
 dev_dependencies:
   flutter_test:
@@ -64,6 +65,7 @@ flutter:
   #   - assets/tr-iller-4326.geojson
   assets:
     - assets/images/
+    - assets/lottie/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
