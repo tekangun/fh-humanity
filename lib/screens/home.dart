@@ -10,7 +10,6 @@ import 'package:humantiy/core/locator.dart';
 import 'package:humantiy/core/services/data_services.dart';
 import 'package:humantiy/core/services/location_services.dart';
 import 'package:shimmer/shimmer.dart';
-
 class Home extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => HomeState();
